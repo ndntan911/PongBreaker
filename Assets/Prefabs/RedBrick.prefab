@@ -9,9 +9,21 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 797391710725285729, guid: 7e80198e98f1a5744a5b221551bfde49, type: 3}
+      propertyPath: scoreValue
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 797391710725285729, guid: 7e80198e98f1a5744a5b221551bfde49, type: 3}
+      propertyPath: breakEffect
+      value: 
+      objectReference: {fileID: 2002463550734650856, guid: 22ac6c84a19e3804ebc0a5c7c7616f22, type: 3}
+    - target: {fileID: 797391710725285729, guid: 7e80198e98f1a5744a5b221551bfde49, type: 3}
       propertyPath: hitsToBreak
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 797391710725285729, guid: 7e80198e98f1a5744a5b221551bfde49, type: 3}
+      propertyPath: breakMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: 396bd9f172c969c41b6d29d3cc22e200, type: 2}
     - target: {fileID: 2317451101304438158, guid: 7e80198e98f1a5744a5b221551bfde49, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

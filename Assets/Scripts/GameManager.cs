@@ -9,17 +9,16 @@ public class GameManager : MonoBehaviour
     public event EventHandler OnGameStarted;
     public event EventHandler OnScoreChanged;
     public event EventHandler OnLivesChanged;
+    public event EventHandler<OnGameOverArgs> OnGameOver;
+    public class OnGameOverArgs : EventArgs { public int score; public int lives; public int bricksDestroyed; }
 
     [Header("Gameplay")]
     public int startingLives = 3;
     private int bricksTotal;
-    public int scorePerBrick = 10;
 
     int score;
     int lives;
     int bricksDestroyed;
-
-    bool gameStarted;
 
     void Awake()
     {
@@ -33,22 +32,17 @@ public class GameManager : MonoBehaviour
         score = 0;
         bricksDestroyed = 0;
         OnGameStarted?.Invoke(this, EventArgs.Empty);
-        // winPanel.SetActive(false);
-        // losePanel.SetActive(false);
-        // startPanel.SetActive(true);
-        // Time.timeScale = 0f; // pause until start
+        Time.timeScale = 0f; // pause until start
     }
 
     public void StartGame()
     {
-        gameStarted = true;
-        // startPanel.SetActive(false);
         Time.timeScale = 1f;
     }
 
-    public void AddScore()
+    public void AddScore(int _score)
     {
-        score += scorePerBrick;
+        score += _score;
         bricksDestroyed++;
         OnScoreChanged?.Invoke(this, EventArgs.Empty);
         if (bricksDestroyed >= bricksTotal) Win();
@@ -67,20 +61,14 @@ public class GameManager : MonoBehaviour
 
     void Win()
     {
-        // Time.timeScale = 0f;
-        // winPanel.SetActive(true);
+        Time.timeScale = 0f;
+        OnGameOver?.Invoke(this, new OnGameOverArgs { score = score, lives = lives, bricksDestroyed = bricksDestroyed });
     }
 
     void Lose()
     {
         Time.timeScale = 0f;
-        // losePanel.SetActive(true);
-    }
-
-    void UpdateUI()
-    {
-        // if (scoreText) scoreText.text = $"Score: {score}";
-        // if (livesText) livesText.text = $"Lives: {lives}";
+        OnGameOver?.Invoke(this, new OnGameOverArgs { score = score, lives = lives, bricksDestroyed = bricksDestroyed });
     }
 
     // simple restart

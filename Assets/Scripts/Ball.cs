@@ -65,35 +65,47 @@ public class Ball : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D col)
     {
-        // Prevent straight vertical bounce (adds small horizontal tweak)
-        Vector2 v = rb.linearVelocity;
-        if (v.x < 2f && v.x >= 0f)
+        if (col.gameObject.TryGetComponent(out Paddle paddle))
         {
-            v.x += 2f;
-            rb.linearVelocity = v.normalized * speed;
-        }
-        else if (v.x > -2f && v.x < 0f)
-        {
-            v.x += -2f;
-            rb.linearVelocity = v.normalized * speed;
-        }
-        else if (v.y < 2f && v.y >= 0f)
-        {
-            v.y += 2f;
-            rb.linearVelocity = v.normalized * speed;
-        }
-        else if (v.y > -2f && v.y < 0f)
-        {
-            v.y += -2f;
-            rb.linearVelocity = v.normalized * speed;
-        }
-    }
+            Vector3 hitPoint = col.GetContact(0).point;
+            Vector3 paddleCenter = paddle.transform.position;
 
-    // public API for GameManager to respawn ball if fall out
-    public void Kill()
-    {
-        // If ball falls below bottom
-        // notify GameManager
-        GameManager.Instance.LoseLife();
+            // How far from the center (negative = left, positive = right)
+            float offset = hitPoint.x - paddleCenter.x;
+
+            // Normalize relative to paddle size
+            float halfWidth = paddle.GetComponent<Collider2D>().bounds.size.x / 2f;
+            float normalizedOffset = offset / halfWidth; // -1 (left) to 1 (right)
+
+            // Calculate bounce direction
+            Vector2 dir = new Vector2(normalizedOffset, 1).normalized;
+
+            rb.linearVelocity = dir * speed;
+        }
+        else
+        {
+            // Prevent straight vertical bounce (adds small horizontal tweak)
+            Vector2 v = rb.linearVelocity;
+            if (v.x < 2f && v.x >= 0f)
+            {
+                v.x += 2f;
+                rb.linearVelocity = v.normalized * speed;
+            }
+            else if (v.x > -2f && v.x < 0f)
+            {
+                v.x += -2f;
+                rb.linearVelocity = v.normalized * speed;
+            }
+            else if (v.y < 2f && v.y >= 0f)
+            {
+                v.y += 2f;
+                rb.linearVelocity = v.normalized * speed;
+            }
+            else if (v.y > -2f && v.y < 0f)
+            {
+                v.y += -2f;
+                rb.linearVelocity = v.normalized * speed;
+            }
+        }
     }
 }

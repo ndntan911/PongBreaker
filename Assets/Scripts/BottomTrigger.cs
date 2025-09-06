@@ -8,7 +8,7 @@ public class BottomTrigger : MonoBehaviour
         {
             // Move ball out of view and notify
             other.gameObject.SetActive(false);
-            Ball.Instance.Kill();
+            GameManager.Instance.LoseLife();
             // Reactivate ball after a small delay (GameManager will call ResetToPaddle)
             other.gameObject.SetActive(true); // immediate re-enable; Ball.ResetToPaddle called by GameManager.LoseLife
         }
